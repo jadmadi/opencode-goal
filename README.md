@@ -21,11 +21,13 @@ For one project, put it in `.opencode/plugins/`. Tested against OpenCode
 
 ## Use
 
-| Command            | Effect                                             |
-| ------------------ | -------------------------------------------------- |
-| `/goal <condition>`| Set the stopping condition for this session        |
+| Command                   | Effect                                                       |
+| ------------------------- | ------------------------------------------------------------ |
+| `/goal <condition>`       | Set the stopping condition for this session                  |
 | `/goal` or `/goal status` | Show the condition, the continue count, and the last verdict |
-| `/goal clear`      | Remove the goal                                    |
+| `/goal clear`             | Remove the goal                                              |
+
+The words `status` and `clear` are reserved as subcommands.
 
 Status has no normal output channel in a plugin command, and a session message
 would start a turn that the watcher then judges, so status is surfaced as a
