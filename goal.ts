@@ -162,7 +162,7 @@ const plugin = {
           const text = typeof prompt?.text === "string" ? prompt.text.trim() : ""
           const existing = await loadGoal(ctx, sessionID)
 
-          if (!text) {
+          if (!text || text.toLowerCase() === "status") {
             const status = existing
               ? [
                   `Goal: ${existing.condition}`,
@@ -171,8 +171,9 @@ const plugin = {
                   `Last verdict: ${existing.lastReason ?? "(none)"}`,
                 ].join("\n")
               : "No goal set. Use /goal <condition>."
-            await ctx.session.prompt({ sessionID, text: status })
-            return
+            // Commands have no output channel, and a session message would start
+            // a turn that the goal watcher would judge. Surface it as an error.
+            throw new Error(status)
           }
 
           if (text.toLowerCase() === "clear") {
@@ -194,7 +195,11 @@ const plugin = {
     void (async () => {
       try {
         for await (const event of ctx.event.subscribe({ signal: controller.signal })) {
-          await handleEvent(ctx, event)
+          try {
+            await handleEvent(ctx, event)
+          } catch (error) {
+            console.error(`goal: event handling failed: ${error}`)
+          }
         }
       } catch {
         // The stream closed or the plugin unloaded.

@@ -24,8 +24,12 @@ For one project, put it in `.opencode/plugins/`. Tested against OpenCode
 | Command            | Effect                                             |
 | ------------------ | -------------------------------------------------- |
 | `/goal <condition>`| Set the stopping condition for this session        |
-| `/goal`            | Show the condition, the continue count, and the last verdict |
+| `/goal` or `/goal status` | Show the condition, the continue count, and the last verdict |
 | `/goal clear`      | Remove the goal                                    |
+
+Status has no normal output channel in a plugin command, and a session message
+would start a turn that the watcher then judges, so status is surfaced as a
+command error message. It never changes the goal.
 
 When a turn ends, the plugin asks the session's model to answer `MET: yes` or
 `MET: no` with a short reason. On `no` it continues, up to the cap. The cap

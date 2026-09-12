@@ -52,6 +52,20 @@ grep goal ~/.local/share/opencode/log/opencode.log | tail
 - `setup` - registers the command and subscribes to events.
 - `goal.test.ts` - tests for the helpers and the turn-end path.
 
+## Command output
+
+A plugin command has no output channel. `/goal` and `/goal status` surface the
+status by throwing, which the client shows as a command error. Do not post the
+status with `ctx.session.prompt`: that starts a turn, and the watcher would then
+judge it, which can advance or end the goal.
+
+## Event location
+
+`session.execution.succeeded` carries an optional `location`. The watcher skips
+events whose location differs from the plugin instance. A location-less event is
+processed by every instance, which is a duplicate-nudge risk; real events were
+observed to carry a location, and the in-flight guard covers one instance.
+
 ## Releasing
 
 - Semantic commit messages. Changes through a feature branch and a PR.

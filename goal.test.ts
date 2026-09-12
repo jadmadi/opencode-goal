@@ -133,6 +133,24 @@ describe("handleEvent", () => {
     expect(generateCalls).toHaveLength(1)
   })
 
+  test("stops after the cap when the judge keeps saying no", async () => {
+    const { ctx, store, prompts } = makeCtx({ verdict: "MET: no\nREASON: not yet" })
+    store.set("goal/ses_1", goal({ max: 3 }))
+    const event = { type: "session.execution.succeeded", data: { sessionID: "ses_1" } }
+    await handleEvent(ctx, event)
+    await handleEvent(ctx, event)
+    await handleEvent(ctx, event)
+    expect((store.get("goal/ses_1") as any).status).toBe("givenup")
+    expect(prompts).toHaveLength(2)
+  })
+
+  test("processes a location-less event once", async () => {
+    const { ctx, store, generateCalls } = makeCtx({ verdict: "MET: yes\nREASON: done" })
+    store.set("goal/ses_1", goal())
+    await handleEvent(ctx, { type: "session.execution.succeeded", data: { sessionID: "ses_1" } })
+    expect(generateCalls).toHaveLength(1)
+  })
+
   test("does nothing without a goal", async () => {
     const { ctx, generateCalls } = makeCtx()
     await handleEvent(ctx, { type: "session.execution.succeeded", data: { sessionID: "ses_9" } })
@@ -167,15 +185,18 @@ describe("setup", () => {
   })
 
   test("sets, shows, and clears the goal", async () => {
-    const { ctx, store, commands, prompts } = makeCtx()
+    const { ctx, store, commands } = makeCtx()
     await (plugin as any).setup(ctx)
     const run = (text: string) => commands[0].execute({ sessionID: "ses_1", prompt: { text } })
 
     await run("pass the tests")
     expect((store.get("goal/ses_1") as any).condition).toBe("pass the tests")
 
-    await run("")
-    expect(prompts[0].text).toContain("pass the tests")
+    await expect(run("status")).rejects.toThrow(/pass the tests/)
+    expect((store.get("goal/ses_1") as any).condition).toBe("pass the tests")
+
+    await expect(run("")).rejects.toThrow(/pass the tests/)
+    expect((store.get("goal/ses_1") as any).condition).toBe("pass the tests")
 
     await run("clear")
     expect(store.get("goal/ses_1")).toBeUndefined()
