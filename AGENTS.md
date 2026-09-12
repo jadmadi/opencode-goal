@@ -37,7 +37,11 @@ grep goal ~/.local/share/opencode/log/opencode.log | tail
   carries `sessionID`. `session.execution.failed` and `.interrupted` end a turn
   too. `session.idle` is in the manifest but did not fire in testing.
 - `ctx.generate.text({ model, prompt })` makes the judge call without touching
-  the conversation.
+  the conversation. It failed on OpenCode Go with `Request is missing
+  x-opencode-session` in testing, so `GOAL_MODEL` overrides the judge model; it
+  defaults to the session model.
+- A judge verdict that is not a clear `MET: yes` or `MET: no` stops the goal
+  with status `givenup`. Never continue on an unknown verdict.
 - State lives in `ctx.storage` under `goal/<sessionID>`.
 
 ## Layout

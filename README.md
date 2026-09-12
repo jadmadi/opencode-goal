@@ -31,6 +31,21 @@ When a turn ends, the plugin asks the session's model to answer `MET: yes` or
 `MET: no` with a short reason. On `no` it continues, up to the cap. The cap
 defaults to 5 and is set with `GOAL_MAX` (a number).
 
+If the judge answer is missing or unparseable, the goal stops with status
+`givenup`. A bad judge can never loop.
+
+## Judge model
+
+The judge uses the session's model by default. Some providers do not support
+transient generation: OpenCode Go returned `Request is missing x-opencode-session`
+for the judge call in testing. Set `GOAL_MODEL` to a working judge, for example:
+
+```sh
+GOAL_MODEL=deepseek/deepseek-flash
+```
+
+The value is a `provider/model` ref, the same form `opencode2 models` prints.
+
 ## Notes
 
 - The turn-end signal is `session.execution.succeeded` from the plugin event
