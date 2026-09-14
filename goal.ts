@@ -11,7 +11,7 @@
 // The runtime does not resolve @opencode/plugin, so this file exports a plain
 // { id, setup } object.
 
-const VERSION = "0.1.1"
+const VERSION = "0.1.2"
 
 type Verdict = "yes" | "no" | "unknown"
 
