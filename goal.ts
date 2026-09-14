@@ -11,6 +11,8 @@
 // The runtime does not resolve @opencode/plugin, so this file exports a plain
 // { id, setup } object.
 
+const VERSION = "0.1.0"
+
 type Verdict = "yes" | "no" | "unknown"
 
 interface GoalVerdict {
@@ -169,8 +171,9 @@ const plugin = {
                   `Status: ${existing.status}`,
                   `Continues: ${existing.continuations}/${existing.max}`,
                   `Last verdict: ${existing.lastReason ?? "(none)"}`,
+                  `goal ${VERSION}`,
                 ].join("\n")
-              : "No goal set. Use /goal <condition>."
+              : `No goal set. Use /goal <condition>.\ngoal ${VERSION}`
             // Commands have no output channel, and a session message would start
             // a turn that the goal watcher would judge. Surface it as an error.
             throw new Error(status)
@@ -209,5 +212,5 @@ const plugin = {
   },
 }
 
-export { decide, evaluateGoal, handleEvent, judgePrompt, parseVerdict }
+export { decide, evaluateGoal, handleEvent, judgePrompt, parseVerdict, VERSION }
 export default plugin

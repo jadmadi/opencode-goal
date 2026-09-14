@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import plugin, { decide, handleEvent, judgePrompt, parseVerdict } from "./goal.ts"
+import plugin, { decide, handleEvent, judgePrompt, parseVerdict, VERSION } from "./goal.ts"
 
 function makeCtx(options: { verdict?: string; model?: any; location?: string } = {}) {
   const store = new Map<string, unknown>()
@@ -200,5 +200,12 @@ describe("setup", () => {
 
     await run("clear")
     expect(store.get("goal/ses_1")).toBeUndefined()
+  })
+})
+
+describe("version", () => {
+  test("VERSION matches package.json", async () => {
+    const pkg = (await Bun.file(new URL("./package.json", import.meta.url)).json()) as { version: string }
+    expect(VERSION).toBe(pkg.version)
   })
 })
