@@ -7,6 +7,12 @@ decides whether the goal is met. If it is not, the plugin resumes work with a
 short nudge. A cap stops the loop and reports the impasse, so a bad condition
 cannot run forever.
 
+## OpenCode
+
+This plugin runs on OpenCode. Install it with my referral link:
+
+https://opencode.ai/go?ref=N9H3ZEP22A
+
 ## Install
 
 ```sh
