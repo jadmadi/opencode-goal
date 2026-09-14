@@ -9,7 +9,8 @@ cannot run forever.
 
 ## OpenCode
 
-This plugin runs on OpenCode. Install it with my referral link:
+This plugin runs on OpenCode. New accounts through my referral link get $5 in
+usage credits, and I get $5 too:
 
 https://opencode.ai/go?ref=N9H3ZEP22A
 
