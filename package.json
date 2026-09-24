@@ -1,6 +1,6 @@
 {
   "name": "opencode-goal",
-  "version": "0.1.2",
+  "version": "2026.9.0",
   "description": "OpenCode V2 plugin that adds a judged goal and stop condition",
   "type": "module",
   "license": "MIT",
