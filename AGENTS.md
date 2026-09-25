@@ -5,7 +5,7 @@ Guidance for agents working in this repository.
 ## What this is
 
 An OpenCode V2 plugin (`goal.ts`) that sets a per-session stopping condition and
-judges it at the end of each turn. No build step, no dependencies, MIT.
+judges it at the end of each turn. No build step, no dependencies, AGPL-3.0-only.
 
 ## Local development
 
