@@ -23,7 +23,9 @@ grep goal ~/.local/share/opencode/log/opencode.log | tail
 
 ## Hard constraints
 
-- Do not import `@opencode/plugin`. Export a plain `{ id, setup }` object.
+- Import `{ Plugin } from "@opencode/plugin"` and export
+  `Plugin.define({ id, setup })`. The host provides the module at runtime; do
+  not add it as a package dependency. Tests stub it in `test-preload.ts`.
 - Keep the plugin dependency-free.
 - Plugin `console` output is not visible to users. Prefer state the model can
   read, and throw only from commands when a message must reach the user.

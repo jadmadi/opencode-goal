@@ -8,10 +8,12 @@
 // Turn-end signal: `session.execution.succeeded` from ctx.event.subscribe.
 // `session.idle` exists in the event manifest but did not fire in testing.
 //
-// The runtime does not resolve @opencode/plugin, so this file exports a plain
-// { id, setup } object.
+// The host provides @opencode/plugin at runtime, so this file uses
+// Plugin.define.
 
-const VERSION = "2026.9.0"
+import { Plugin } from "@opencode/plugin"
+
+const VERSION = "2026.10.0"
 
 type Verdict = "yes" | "no" | "unknown"
 
@@ -153,7 +155,7 @@ async function handleEvent(ctx: any, event: any): Promise<void> {
   await evaluateGoal(ctx, sessionID)
 }
 
-const plugin = {
+const plugin = Plugin.define({
   id: "goal",
   async setup(ctx: any) {
     await ctx.command.transform((editor: any) => {
@@ -210,7 +212,7 @@ const plugin = {
     })()
     return () => controller.abort()
   },
-}
+})
 
 export { decide, evaluateGoal, handleEvent, judgePrompt, parseVerdict, VERSION }
 export default plugin
